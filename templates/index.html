@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>LIMA - <b>L</b>udeed's <b>I</b>nventory <b>Ma</b>nagement</h1>
+<h2>Items:</h2>
+<ul>
+  {% for i in items %}
+  <li>{{ i }}</li>
+  {% endfor %}
+</ul>
+
+<form action="/" method="post">
+  <label for="name">
+    Enter item name:
+    <input type="text" name="name">
+  </label>
+
+  <label>
+    Enter item description:
+    <input type="text" name="description">
+  </label>
+
+  <label>
+    Enter item location:
+    <input type="text" name="location">
+  </label>
+
+  <label>
+    Enter item initial quantity:
+    <input type="number" name="quantity">
+  </label>
+
+  <input type="submit" value="Subscribe!">
+</form>
+{% endblock %}
+
