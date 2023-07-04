@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 1px),
+                    radial-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 1px);
+  background-position: 0 0, 12px 12px;
+  background-size: 24px 24px;
+}
+

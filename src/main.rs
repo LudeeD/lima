@@ -15,12 +15,29 @@ use tower_http::services::{ServeDir, ServeFile};
 #[template(path = "index.html")]
 struct IndexTemplate<'a> {
     name: &'a str,
-    items: Vec<String>,
+    items: Vec<Item>,
+}
+
+#[derive(sqlx::FromRow, Debug)]
+struct Item {
+    id: i64,
+    name: String,
+    description: String,
+    location: String,
+    quantity: String,
+    done: bool,
+}
+
+impl std::fmt::Display for Item {
+    fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(fmt, "{}", self.name)
+    }
 }
 
 async fn index(State(state): State<AppState>) -> Result<IndexTemplate<'static>, StatusCode> {
     let pool = state.db_pool;
-    let recs = sqlx::query!(
+    let recs = sqlx::query_as!(
+        Item,
         r#"
 SELECT * 
 FROM Items
@@ -33,7 +50,7 @@ ORDER BY id
 
     Ok(IndexTemplate {
         name: "world",
-        items: recs.iter().map(|record| format!("{:?}", record)).collect(),
+        items: recs,
     })
 }
 
@@ -73,7 +90,8 @@ async fn item_info(
     Path(id): Path<i64>,
 ) -> Result<IndexTemplate<'static>, StatusCode> {
     let pool = state.db_pool;
-    let recs = sqlx::query!(
+    let recs = sqlx::query_as!(
+        Item,
         r#"
 SELECT * 
 FROM Items
@@ -87,7 +105,7 @@ WHERE id = ?1
 
     Ok(IndexTemplate {
         name: "world",
-        items: recs.iter().map(|record| format!("{:?}", record)).collect(),
+        items: recs,
     })
 }
 
