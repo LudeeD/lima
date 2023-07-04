@@ -1,5 +1,11 @@
 use askama::Template;
-use axum::{extract::State, http::StatusCode, response::Redirect, routing::get, Form, Router};
+use axum::{
+    extract::{Path, State},
+    http::StatusCode,
+    response::Redirect,
+    routing::get,
+    Form, Router,
+};
 use serde::Deserialize;
 use sqlx::sqlite::SqlitePool;
 use std::{env, net::SocketAddr};
@@ -62,6 +68,29 @@ VALUES ( ?1 , ?2, ?3, ?4)
     Ok(Redirect::to("/"))
 }
 
+async fn item_info(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> Result<IndexTemplate<'static>, StatusCode> {
+    let pool = state.db_pool;
+    let recs = sqlx::query!(
+        r#"
+SELECT * 
+FROM Items
+WHERE id = ?1
+        "#,
+        id
+    )
+    .fetch_all(&pool)
+    .await
+    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+
+    Ok(IndexTemplate {
+        name: "world",
+        items: recs.iter().map(|record| format!("{:?}", record)).collect(),
+    })
+}
+
 #[derive(Clone)]
 struct AppState {
     db_pool: SqlitePool,
@@ -75,6 +104,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let app = Router::new()
         .route("/", get(index).post(create_item))
+        .route("/item/:id", get(item_info))
         .with_state(state);
 
     let app = app.merge(using_serve_dir_with_assets_fallback());
