@@ -551,12 +551,20 @@ video {
   table-layout: auto;
 }
 
+.flex-row {
+  flex-direction: row;
+}
+
 .flex-col {
   flex-direction: column;
 }
 
 .gap-10 {
   gap: 2.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
 }
 
 .divide-y > :not([hidden]) ~ :not([hidden]) {
@@ -614,10 +622,23 @@ video {
   text-transform: uppercase;
 }
 
+.text-lime-600 {
+  --tw-text-opacity: 1;
+  color: rgb(101 163 13 / var(--tw-text-opacity));
+}
+
+.underline {
+  text-decoration-line: underline;
+}
+
 body {
   background-image: radial-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 1px),
                     radial-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 1px);
   background-position: 0 0, 12px 12px;
   background-size: 24px 24px;
+}
+
+.hover\:underline:hover {
+  text-decoration-line: underline;
 }
 

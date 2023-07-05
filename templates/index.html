@@ -3,7 +3,20 @@
 {% block content %}
 <div class="flex flex-col gap-10">
 
-  <h1 class="text-3xl font-bold">LIMA - <b>L</b>udeed's <b>I</b>nventory <b>Ma</b>nagement</h1>
+  <div>
+
+    <h1 class="text-3xl font-bold text-lime-600">LIMA - <b>L</b>udeed's <b>I</b>nventory <b>Ma</b>nagement</h1>
+
+    <nav>
+      <ul class="flex flex-row gap-4">
+        <li><a class="text-lime-600 underline" href="/items">Items</a></li>
+        <li><a class="hover:underline" href="/generate">Generate</a></li>
+        <li><a class="hover:underline" href="/incoming">Incoming</a></li>
+        <li><a class="hover:underline" href="/outgoing">Outgoing</a></li>
+      </ul>
+    </nav>
+
+  </div>
 
   <table class="table-auto min-w-full divide-y divide-gray-200">
     <thead>
@@ -29,31 +42,6 @@
         {% endfor %}
     </tbody>
   </table>
-
-  <form action="/" method="post">
-    <label for="name">
-      Enter item name:
-      <input type="text" name="name">
-    </label>
-
-    <label>
-      Enter item description:
-      <input type="text" name="description">
-    </label>
-
-    <label>
-      Enter item location:
-      <input type="text" name="location">
-    </label>
-
-    <label>
-      Enter item initial quantity:
-      <input type="number" name="quantity">
-    </label>
-
-    <input type="submit" value="Subscribe!">
-  </form>
-
 </div>
 
 {% endblock %}
